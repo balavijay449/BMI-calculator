@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>BMI Calculator</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+	<!-- Popper JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+	<!-- Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<meta name="theme-color" content="#335">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="bmi.css">
+</head>
+<body>
+	<div class="audio-head">
+		<input type="checkbox" id="check">
+		<label for="check">
+			<img src="images/sound-on.png" class="speaker-on" height="40"><span class="speak">Speaker On</span>
+		</label>
+	</div>
+	<div class="container d-flex justify-content-center flex-column align-items-center">
+		<div class="quote">Check What Is Your BMI</div>
+		<div class="root">
+			<div class="root-batch">
+				<div class="h3 head">BMI Calculator</div>
+				<div class="height-root">
+					<input type="text" id="height" class="form" required>
+					<label class="height-label" for="height">height (cm)</label><br>
+				</div>
+				<div class="weight-root">
+					<input type="text" id="weight" class="form" required>
+					<label class="weight-label" for="weight">weight (kg)</label><br>
+				</div>
+				<button type="button" class="btn text-light form" id="calculate">Calculate</button>
+			</div>
+			<div class="result">--Check Your BMI--</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		function output(){
+			var height = document.querySelector("#height").value;
+			var weight = document.querySelector("#weight").value;
+			height = height / 100;
+			height = Math.pow(height, 2);
+			var bmi = (weight / height).toFixed(2);
+			if (bmi >= 18.5 && bmi <= 25) {
+				document.querySelector(".result").style.color = "green";
+				document.querySelector(".result").innerHTML = "Your BMI is " + "<mark>" + bmi + "</mark>";
+				document.querySelector(".quote").style.backgroundColor = "green";
+				document.querySelector(".quote").innerHTML = "--You Are Healthy--";
+				var normal = new Audio("ringtones/normal.mp3");
+				click(normal);
+			}
+			else if (bmi > 25 && bmi <= 30){
+				document.querySelector(".result").style.color = "#FFA600";
+				document.querySelector(".result").innerHTML = "Your BMI is " + "<mark>" + bmi + "</mark>";
+				document.querySelector(".quote").style.backgroundColor = "#FFA600";
+				document.querySelector(".quote").innerHTML = "<span>Warning!</span> Overweight";
+				var over = new Audio("ringtones/overweight.mp3");
+				click(over);
+			}
+			else if (bmi >= 16.5 && bmi < 18.5) {
+				document.querySelector(".result").style.color = "#FFA600";
+				document.querySelector(".result").innerHTML = "Your BMI is " + "<mark>" + bmi + "</mark>";
+				document.querySelector(".quote").style.backgroundColor = "#FFA600";
+				document.querySelector(".quote").innerHTML = "<span>Warning!</span> Underweight";
+				var under = new Audio("ringtones/underweight.mp3");
+				click(under);
+			}
+			else if (bmi > 30){
+				document.querySelector(".result").style.color = "red";
+				document.querySelector(".result").innerHTML = "Your BMI is " + "<mark>" + bmi + "</mark>";
+				document.querySelector(".quote").style.backgroundColor = "red";
+				document.querySelector(".quote").innerHTML = "<span>Danger!!</span> Obese";
+				var obese = new Audio("ringtones/obese.mp3");
+				click(obese);
+			}
+			else{
+				document.querySelector(".result").style.color = "red";
+				document.querySelector(".result").innerHTML = "Your BMI is " + "<mark>" + bmi + "</mark>";
+				document.querySelector(".quote").style.backgroundColor = "red";
+				document.querySelector(".quote").innerHTML = "<span>Danger!!</span> Severe Thinness";
+				var thin = new Audio("ringtones/thin.mp3");
+				click(thin);
+			}
+		}
+		document.querySelector("#calculate").addEventListener("click", output);
+		//JS MEDIA QUERY'S...
+		function myFunction(x) {
+			if (x.matches) { // If media query matches
+				document.querySelector(".quote").innerHTML = "Check Your BMI";
+		  	} else {
+		    	document.querySelector(".quote").innerHTML = "Check What Is Your BMI";
+		  	}
+		}
+		var x = window.matchMedia("(max-width: 467px)");
+		myFunction(x); // Call listener function at run time
+		x.addListener(myFunction); // Attach listener function on state changes 
+		//SPEAKER ADD...
+		function click(on){
+			var check = document.querySelector("#check").checked;
+			if (check == false) {
+				on.play();
+				//document.querySelector(".speaker-on").src = "images/sound-on.png";
+			}
+			else{
+				on.pause();
+				//document.querySelector(".speaker-on").src = "images/mute.png";
+			}
+		}
+		document.querySelector(".speaker-on").addEventListener("click", click);
+		document.querySelector(".speaker-on").addEventListener("click", function(){
+			var check = document.querySelector("#check").checked;
+			if (check == false) {
+				document.querySelector(".speaker-on").src = "images/mute.png";
+				document.querySelector(".speak").innerHTML = "Speaker Off";
+			}
+			else{
+				document.querySelector(".speaker-on").src = "images/sound-on.png";
+				document.querySelector(".speak").innerHTML = "Speaker On";
+			}
+		});
+	</script>
+</body>
+</html>
